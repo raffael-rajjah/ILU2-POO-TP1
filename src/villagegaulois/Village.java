@@ -69,13 +69,15 @@ public class Village {
 			return null;
 		}
 		
-		void afficherMarche() {
+		String afficherMarche() {
+			
+			StringBuilder stringBuilder = new StringBuilder();
 			
 			int nbEtalLibre = 0;
 			
 			for(int i = 0; i < etals.length; i++) {
 				if(etals[i].isEtalOccupe()) {
-					System.out.println(etals[i].afficherEtal());
+					stringBuilder.append(etals[i].afficherEtal());
 				}
 				
 				else {
@@ -84,7 +86,12 @@ public class Village {
 				
 			}
 			
-			System.out.println("Il reste " + nbEtalLibre + " Ètals non utilisÈs dans le marchÈ");
+			if(nbEtalLibre >= 0) {
+				stringBuilder.append("Il reste " + nbEtalLibre + " √©tals non utilis√©s dans le march√©");
+				
+			}
+			
+			return stringBuilder.toString();			
 		}
 		
 	}
@@ -95,11 +102,11 @@ public class Village {
 		
 		
 		if(etalTrouve.length <= 0) {
-			return "Il n'y a pas de vendeur qui propose des fleurs au marchÈ.";
+			return "Il n'y a pas de vendeur qui propose des fleurs au march√©.";
 		}
 		
 		else if (etalTrouve.length == 1) {
-			return "Seul le vendeur " + etalTrouve[0].getVendeur().getNom() + " propose des fleurs au marchÈ.";
+			return "Seul le vendeur " + etalTrouve[0].getVendeur().getNom() + " propose des fleurs au march√©.";
 		}
 		
 		else {
@@ -119,7 +126,15 @@ public class Village {
 	}
 	
 	public String partirVendeur(Gaulois vendeur) {
-		return "Le vendeur " + vendeur.getNom() + " quitte son Ètal, il a vendu ";
+		Etal etalVendeur = rechercherEtal(vendeur);
+	
+		return etalVendeur.libererEtal();
+	}
+	
+	public String afficherMarche() {
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("Le march√© du vilalge \"le village de irr√©ductibles\" poss√®de plusieurs √©tals : \n");
+		return stringBuilder.append(marche.afficherMarche()).toString();
 	}
 	
 	public String installerVendeur(Gaulois vendeur, String produit, int nbProduit) {
@@ -129,7 +144,7 @@ public class Village {
 		int noEtal = marche.trouverEtalLibre();
 		marche.utiliserEtal(noEtal, vendeur, produit, nbProduit);
 		
-		chaine.append("Le vendeur " + vendeur.getNom() + " vend des fleurs ‡ l'Ètal n∞" + (noEtal+1));
+		chaine.append("Le vendeur " + vendeur.getNom() + " vend des fleurs √† l'√©tal n‚Å∞" + (noEtal+1));
 		return chaine.toString();	
 		
 
@@ -169,8 +184,13 @@ public class Village {
 		return null;
 	}
 
-	public String afficherVillageois() {
+	public String afficherVillageois() throws VillageSansChefException {
 		StringBuilder chaine = new StringBuilder();
+		
+		if(chef == null) {
+			throw new VillageSansChefException("Il n'y a pas de chef");
+		}
+		
 		if (nbVillageois < 1) {
 			chaine.append("Il n'y a encore aucun habitant au village du chef "
 					+ chef.getNom() + ".\n");

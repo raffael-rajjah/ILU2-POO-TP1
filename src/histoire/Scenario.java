@@ -5,10 +5,11 @@ import personnages.Druide;
 import personnages.Gaulois;
 import villagegaulois.Etal;
 import villagegaulois.Village;
+import villagegaulois.VillageSansChefException;
 
 public class Scenario {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws VillageSansChefException {
 		Village village = new Village("le village des irréductibles", 10, 5);
 		Chef abraracourcix = new Chef("Abraracourcix", 10, village);
 		village.setChef(abraracourcix);
@@ -38,8 +39,8 @@ public class Scenario {
 		System.out.println(etalFleur.acheterProduit(10, abraracourcix));
 		System.out.println(etalFleur.acheterProduit(15, obelix));
 		System.out.println(etalFleur.acheterProduit(15, assurancetourix));
-//		System.out.println(village.partirVendeur(bonemine));
-//		System.out.println(village.afficherMarche());
+		System.out.println(village.partirVendeur(bonemine));
+		System.out.println(village.afficherMarche());
 	}
 
 }
